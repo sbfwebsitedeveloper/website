@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBF - Experiências e Cultura</title>
+    <link href="output.css" rel="stylesheet" />
+    <link href="/src/assets/inter.css" rel="stylesheet" />
+    <script defer src="/src/assets/alpine.js"></script>
+  </head>
+  <body x-data="{ showNewsletterModal: false }">
+    <div class="relative h-screen">
+      <!-- Background image with overlay for fade effect and blur -->
+      <div
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style="background-image: url('src/assets/bg.jpg')"
+      ></div>
+
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-xs"></div>
+
+      <!-- Content container -->
+      <div class="relative flex flex-col h-screen overflow-hidden">
+        <header
+          class="relative z-20"
+          x-data="{
+            mobileMenuOpen: false,
+            screenWidth: window.innerWidth,
+            init() {
+              window.addEventListener('resize', () => {
+                  this.screenWidth = window.innerWidth;
+              });
+              this.$watch('screenWidth', (value) => {
+                  if (value >= 768) {
+                    this.mobileMenuOpen = false;
+                  }
+              });
+            }
+          }"
+        >
+          <nav
+            class="mx-auto flex max-w-6xl items-center justify-between pt-6 px-8"
+            aria-label="Global"
+          >
+            <a href="#">
+              <span class="sr-only">SBF</span>
+              <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
+            </a>
+            <div class="flex lg:hidden">
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md text-white"
+                @click="mobileMenuOpen = true"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                  <path d="M4 6h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-10">
+              <a
+                href="trips.html"
+                class="text-sm/6 font-medium text-white tracking-wide hover:text-gray-300"
+                >Viagens</a
+              >
+              <a
+                href="content.html"
+                class="text-sm/6 font-medium text-white tracking-wide hover:text-gray-300"
+                >Conteúdo</a
+              >
+              <a
+                href="products.html"
+                class="text-sm/6 font-medium text-white tracking-wide hover:text-gray-300"
+                >Produtos</a
+              >
+              <a
+                href="about.html"
+                class="text-sm/6 font-medium text-white tracking-wide hover:text-gray-300"
+                >Sobre nós</a
+              >
+            </div>
+          </nav>
+
+          <!-- Mobile menu -->
+          <div
+            class="lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            x-show="mobileMenuOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-cloak
+            style="z-index: 50"
+          >
+            <div class="fixed inset-0 z-50 bg-black/70"></div>
+            <div
+              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 sm:max-w-sm"
+            >
+              <div
+                class="flex items-center justify-between pl-6 pr-8 py-6 border-b border-gray-700/30"
+              >
+                <a href="#" class="focus:outline-none">
+                  <span class="sr-only">SBF</span>
+                  <img
+                    class="h-16 w-auto focus:outline-none"
+                    src="src/assets/logo.png"
+                    alt="SBF"
+                  />
+                </a>
+                <button
+                  type="button"
+                  class="rounded-md text-white"
+                  @click="mobileMenuOpen = false"
+                >
+                  <span class="sr-only">Close menu</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-x-icon lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                class="divide-y divide-gray-700/30 border-y border-gray-700/30"
+              >
+                <a
+                  href="trips.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-white hover:bg-gray-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400"
+                  >
+                    <path
+                      d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
+                    />
+                    <path d="M8 10h8" />
+                    <path d="M8 18h8" />
+                    <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6" />
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  Viagens
+                </a>
+
+                <a
+                  href="content.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-white hover:bg-gray-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-folder-icon lucide-folder text-gray-400"
+                  >
+                    <path
+                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+                    />
+                  </svg>
+                  Conteúdo
+                </a>
+
+                <a
+                  href="products.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-white hover:bg-gray-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-package-icon lucide-package text-gray-400"
+                  >
+                    <path
+                      d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
+                    />
+                    <path d="M12 22V12" />
+                    <polyline points="3.29 7 12 12 20.71 7" />
+                    <path d="m7.5 4.27 9 5.15" />
+                  </svg>
+                  Produtos
+                </a>
+
+                <a
+                  href="about.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-white hover:bg-gray-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                  Sobre nós
+                </a>
+
+                <a
+                  href="contacts.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-white hover:bg-gray-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    x
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  Contacte-nos
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Hero section - centered in the remaining space -->
+        <div
+          class="flex-grow flex items-center justify-center pb-24 transition-all duration-700 ease-out"
+          x-data="{ shown: false }"
+          x-init="setTimeout(() => shown = true, 100)"
+          :style="shown ? 'opacity: 1; transform: translateY(0);' : 'opacity: 0; transform: translateY(3rem);'"
+          style="z-index: 5"
+        >
+          <div class="mx-auto max-w-2xl">
+            <div class="mb-8 flex justify-center">
+              <div
+                class="relative rounded-full px-3.5 py-1 text-sm/6 text-gray-300 ring-1 ring-white/10"
+              >
+                Receba novidades e ofertas exclusivas.
+                <button
+                  @click="showNewsletterModal = true"
+                  class="font-medium text-blue-300 hover:text-blue-400"
+                >
+                  <span class="absolute inset-0" aria-hidden="true"></span
+                  >Registe-se
+                  <span class="pl-1" aria-hidden="true">&rarr;</span>
+                </button>
+              </div>
+            </div>
+            <div class="text-center px-8">
+              <h1
+                class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl"
+              >
+                Descubra a cultura canábica
+              </h1>
+              <p
+                class="mt-8 text-pretty text-lg font-light text-gray-200 sm:text-lg/8"
+              >
+                As nossas viagens oferecem experiências únicas que combinam
+                cultura, tradições e artesanato local. Conheça o nosso conteúdo
+                exclusivo e descubra uma nova perspectiva.
+              </p>
+              <div class="mt-10 flex items-center justify-center gap-x-6">
+                <a
+                  href="#"
+                  class="rounded-full bg-blue-500 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  >Reservar viagem</a
+                >
+                <a
+                  href="#"
+                  class="text-sm/6 font-medium text-white hover:text-gray-300"
+                  >Conteúdo <span class="pl-1" aria-hidden="true">→</span></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Modal -->
+    <div
+      x-show="showNewsletterModal"
+      x-cloak
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      @click.self="showNewsletterModal = false"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+        x-data="{
+          email: '',
+          isSuccess: false,
+          isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+          },
+          submitNewsletter() {
+            if (!this.email || !this.isValidEmail(this.email)) return;
+            
+            const formData = {
+              timestamp: new Date().toISOString(),
+              email: this.email
+            };
+            
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwLAbC85PQ-j8-DCWDBR6SPDK5vNC_SvY8cKC00TjqYfR-Si71udTh9W9F-bBhLgIXE/exec';
+            
+            // Send request without waiting for response
+            fetch(scriptURL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ ...formData, type: 'newsletter' })
+            });
+            
+            // Immediately show success
+            this.isSuccess = true;
+            setTimeout(() => {
+              this.showNewsletterModal = false;
+              // Reset form after closing animation completes
+              setTimeout(() => {
+                this.resetForm();
+              }, 250);
+            }, 2000);
+          },
+          resetForm() {
+            this.email = '';
+            this.isSuccess = false;
+          }
+        }"
+        @click.away="showNewsletterModal = false"
+      >
+        <!-- Modal Content -->
+        <div class="p-6">
+          <div class="text-center mb-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">
+              Não perca nenhuma novidade!
+            </h4>
+            <p class="text-gray-600 text-sm">
+              Receba em primeira mão informações sobre novas viagens, ofertas
+              exclusivas e conteúdo premium sobre cultura canábica.
+            </p>
+          </div>
+
+          <form @submit.prevent="submitNewsletter()" class="space-y-4">
+            <div>
+              <label
+                for="newsletter-email"
+                class="block text-sm font-medium text-gray-900 mb-2"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="newsletter-email"
+                x-model="email"
+                required
+                :disabled="isSuccess"
+                class="block w-full rounded-lg border border-gray-300 px-3 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                placeholder="seu@email.com"
+              />
+            </div>
+
+            <button
+              type="submit"
+              :disabled="!email || !isValidEmail(email) || isSuccess"
+              :class="{
+                'bg-gray-300 cursor-not-allowed': !email || !isValidEmail(email),
+                'bg-blue-600 hover:bg-blue-700': email && isValidEmail(email) && !isSuccess,
+                'bg-green-600': isSuccess
+              }"
+              class="w-full text-white py-3 px-4 rounded-lg text-sm font-semibold transition-colors"
+            >
+              <span x-show="!isSuccess">Registar</span>
+              <span x-show="isSuccess" class="flex items-center justify-center">
+                <svg
+                  class="mr-2 h-4 w-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+                Sucesso
+              </span>
+            </button>
+          </form>
+
+          <p class="text-xs text-gray-500 text-center mt-4">
+            Ao registar-se, concorda em receber emails da SBF. Pode cancelar a
+            subscrição a qualquer momento.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

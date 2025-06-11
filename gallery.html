@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBF - Galeria</title>
+    <link href="output.css" rel="stylesheet" />
+    <link href="/src/assets/inter.css" rel="stylesheet" />
+    <script defer src="/src/assets/alpine.js"></script>
+  </head>
+  <body>
+    <div class="relative">
+      <!-- Content container -->
+      <div class="relative flex flex-col overflow-hidden">
+        <header
+          class="relative z-20"
+          x-data="{
+            mobileMenuOpen: false,
+            screenWidth: window.innerWidth,
+            init() {
+              window.addEventListener('resize', () => {
+                  this.screenWidth = window.innerWidth;
+              });
+              this.$watch('screenWidth', (value) => {
+                  if (value >= 768) {
+                    this.mobileMenuOpen = false;
+                  }
+              });
+            }
+          }"
+        >
+          <nav
+            class="mx-auto flex max-w-6xl items-center justify-between py-6 px-8"
+            aria-label="Global"
+          >
+            <a href="index.html">
+              <span class="sr-only">SBF</span>
+              <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
+            </a>
+            <div class="flex lg:hidden">
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md text-black"
+                @click="mobileMenuOpen = true"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                  <path d="M4 6h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-10">
+              <a
+                href="trips.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Viagens</a
+              >
+              <a
+                href="content.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Conteúdo</a
+              >
+              <a
+                href="products.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Produtos</a
+              >
+              <a
+                href="about.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Sobre nós</a
+              >
+            </div>
+          </nav>
+
+          <!-- Mobile menu -->
+          <div
+            class="lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            x-show="mobileMenuOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-cloak
+            style="z-index: 50"
+          >
+            <div class="fixed inset-0 z-50 bg-black/70"></div>
+            <div
+              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm"
+            >
+              <div class="flex items-center justify-between pl-6 pr-8 py-6">
+                <a href="#" class="focus:outline-none">
+                  <span class="sr-only">SBF</span>
+                  <img
+                    class="h-16 w-auto"
+                    src="src/assets/logo.png"
+                    alt="SBF"
+                  />
+                </a>
+                <button
+                  type="button"
+                  class="rounded-md text-black"
+                  @click="mobileMenuOpen = false"
+                >
+                  <span class="sr-only">Close menu</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-x-icon lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                class="divide-y divide-gray-400/30 border-y border-gray-400/30"
+              >
+                <a
+                  href="trips.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400"
+                  >
+                    <path
+                      d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
+                    />
+                    <path d="M8 10h8" />
+                    <path d="M8 18h8" />
+                    <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6" />
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  Viagens
+                </a>
+
+                <a
+                  href="content.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-folder-icon lucide-folder text-gray-400"
+                  >
+                    <path
+                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+                    />
+                  </svg>
+                  Conteúdo
+                </a>
+
+                <a
+                  href="products.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-package-icon lucide-package text-gray-400"
+                  >
+                    <path
+                      d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
+                    />
+                    <path d="M12 22V12" />
+                    <polyline points="3.29 7 12 12 20.71 7" />
+                    <path d="m7.5 4.27 9 5.15" />
+                  </svg>
+                  Produtos
+                </a>
+
+                <a
+                  href="about.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                  Sobre nós
+                </a>
+
+                <a
+                  href="contacts.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    x
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  Contacte-nos
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div
+          class="max-w-6xl mx-auto w-full px-8 py-6 flex justify-between items-end"
+        >
+          <div>
+            <h2
+              class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl"
+            >
+              Galeria
+            </h2>
+            <p
+              class="mt-4 text-pretty text-md font-light text-gray-600 sm:text-md/8"
+            >
+              Explore nossa coleção de fotografias de destinos ao redor do
+              mundo.
+            </p>
+          </div>
+
+          <!-- Filter buttons -->
+          <div
+            class="flex flex-wrap gap-2"
+            x-data="{ 
+              filters: {
+                tours: true,
+                merch: true,
+                events: true
+              },
+              firstFilterClick: true,
+              
+              toggleFilter(filter) {
+                if (this.firstFilterClick) {
+                  // On first click, deactivate all other filters
+                  Object.keys(this.filters).forEach(key => {
+                    this.filters[key] = false;
+                  });
+                  this.filters[filter] = true;
+                  this.firstFilterClick = false;
+                  return;
+                }
+                
+                // Check if this is the last active filter
+                const activeFilters = Object.keys(this.filters).filter(key => this.filters[key]);
+                if (activeFilters.length === 1 && activeFilters[0] === filter) {
+                  // Don't toggle if it's the last active filter
+                  return;
+                }
+                
+                this.filters[filter] = !this.filters[filter];
+              }
+            }"
+          >
+            <button
+              @click="toggleFilter('tours'); $dispatch('filter-changed', {filters})"
+              :class="{'bg-blue-600 text-white': filters.tours, 'bg-gray-200 text-gray-800': !filters.tours}"
+              class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200"
+            >
+              Viagens
+            </button>
+            <button
+              @click="toggleFilter('merch'); $dispatch('filter-changed', {filters})"
+              :class="{'bg-blue-600 text-white': filters.merch, 'bg-gray-200 text-gray-800': !filters.merch}"
+              class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200"
+            >
+              Produtos
+            </button>
+            <button
+              @click="toggleFilter('events'); $dispatch('filter-changed', {filters})"
+              :class="{'bg-blue-600 text-white': filters.events, 'bg-gray-200 text-gray-800': !filters.events}"
+              class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200"
+            >
+              Eventos
+            </button>
+          </div>
+        </div>
+
+        <!-- Gallery grid -->
+        <div class="max-w-6xl mx-auto w-full px-8 pt-6 pb-16">
+          <div
+            x-data="{ 
+              showModal: false,
+              imgSrc: '',
+              imgAlt: 'Imagem ampliada',
+              filters: {
+                tours: true,
+                merch: true,
+                events: true
+              },
+              
+              openModal(src) {
+                this.imgSrc = src;
+                this.showModal = true;
+              },
+              
+              closeModal() {
+                this.showModal = false;
+              },
+              
+              isVisible(tags) {
+                // Check if any of the active filters match the image tags
+                return tags.some(tag => this.filters[tag]);
+              }
+            }"
+            @filter-changed.window="filters = $event.detail.filters"
+          >
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <!-- Image items with tags -->
+              <div
+                x-show="isVisible(['tours'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/1.jpg')"
+              >
+                <img
+                  src="src/assets/1.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['tours', 'events'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/2.jpg')"
+              >
+                <img
+                  src="src/assets/2.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['tours'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/3.jpg')"
+              >
+                <img
+                  src="src/assets/3.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['events'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/4.jpg')"
+              >
+                <img
+                  src="src/assets/4.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['tours', 'events'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/5.jpg')"
+              >
+                <img
+                  src="src/assets/5.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['tours'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/india.jpg')"
+              >
+                <img
+                  src="src/assets/india.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['merch'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/morroco.jpg')"
+              >
+                <img
+                  src="src/assets/morroco.jpg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['tours', 'merch'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/beldi.jpeg')"
+              >
+                <img
+                  src="src/assets/beldi.jpeg"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['merch'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/about1.png')"
+              >
+                <img
+                  src="src/assets/about1.png"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                x-show="isVisible(['events', 'merch'])"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="aspect-square overflow-hidden rounded-lg cursor-pointer transition hover:opacity-90"
+                @click="openModal('src/assets/about2.png')"
+              >
+                <img
+                  src="src/assets/about2.png"
+                  alt="Galeria"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
+            <!-- Image Modal -->
+            <div
+              class="relative z-50"
+              aria-labelledby="modal-title"
+              role="dialog"
+              aria-modal="true"
+              x-show="showModal"
+              x-transition:enter="ease-out duration-300"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="ease-in duration-200"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+              x-cloak
+            >
+              <!-- Background backdrop -->
+              <div
+                class="fixed inset-0 bg-black/75 transition-opacity"
+                aria-hidden="true"
+                @click="closeModal()"
+              ></div>
+
+              <div
+                class="fixed inset-0 z-10 w-screen overflow-y-auto"
+                @click="closeModal()"
+              >
+                <div class="flex min-h-full items-center justify-center p-8">
+                  <!-- Modal panel -->
+                  <div
+                    class="relative transform overflow-hidden rounded-2xl bg-black transition-all max-w-5xl"
+                    @click.stop
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  >
+                    <!-- Close button -->
+                    <button
+                      type="button"
+                      class="absolute top-3 right-3 z-10 text-white bg-black/50 rounded-full p-2 hover:bg-black/75 transition"
+                      @click="closeModal()"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </button>
+
+                    <!-- Image container -->
+                    <div class="max-h-[80vh] max-w-full">
+                      <img
+                        :src="imgSrc"
+                        :alt="imgAlt"
+                        class="max-h-[80vh] w-auto max-w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

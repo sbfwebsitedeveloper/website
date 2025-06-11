@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBF - Produtos</title>
+    <link href="output.css" rel="stylesheet" />
+    <link href="/src/assets/inter.css" rel="stylesheet" />
+    <script defer src="/src/assets/alpine.js"></script>
+  </head>
+  <body>
+    <div class="relative">
+      <!-- Content container -->
+      <div class="relative flex flex-col overflow-hidden">
+        <header
+          class="relative z-20"
+          x-data="{
+            mobileMenuOpen: false,
+            screenWidth: window.innerWidth,
+            init() {
+              window.addEventListener('resize', () => {
+                  this.screenWidth = window.innerWidth;
+              });
+              this.$watch('screenWidth', (value) => {
+                  if (value >= 768) {
+                    this.mobileMenuOpen = false;
+                  }
+              });
+            }
+          }"
+        >
+          <nav
+            class="mx-auto flex max-w-6xl items-center justify-between py-6 px-8"
+            aria-label="Global"
+          >
+            <a href="index.html">
+              <span class="sr-only">SBF</span>
+              <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
+            </a>
+            <div class="flex lg:hidden">
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md text-black"
+                @click="mobileMenuOpen = true"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                  <path d="M4 6h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-10">
+              <a
+                href="trips.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Viagens</a
+              >
+              <a
+                href="content.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Conteúdo</a
+              >
+              <a
+                href="products.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Produtos</a
+              >
+              <a
+                href="about.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Sobre nós</a
+              >
+            </div>
+          </nav>
+
+          <!-- Mobile menu -->
+          <div
+            class="lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            x-show="mobileMenuOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-cloak
+            style="z-index: 50"
+          >
+            <div class="fixed inset-0 z-50 bg-black/70"></div>
+            <div
+              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm"
+            >
+              <div class="flex items-center justify-between pl-6 pr-8 py-6">
+                <a href="#" class="focus:outline-none">
+                  <span class="sr-only">SBF</span>
+                  <img
+                    class="h-16 w-auto"
+                    src="src/assets/logo.png"
+                    alt="SBF"
+                  />
+                </a>
+                <button
+                  type="button"
+                  class="rounded-md text-black"
+                  @click="mobileMenuOpen = false"
+                >
+                  <span class="sr-only">Close menu</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-x-icon lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                class="divide-y divide-gray-400/30 border-y border-gray-400/30"
+              >
+                <a
+                  href="trips.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400"
+                  >
+                    <path
+                      d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
+                    />
+                    <path d="M8 10h8" />
+                    <path d="M8 18h8" />
+                    <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6" />
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  Viagens
+                </a>
+
+                <a
+                  href="content.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-folder-icon lucide-folder text-gray-400"
+                  >
+                    <path
+                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+                    />
+                  </svg>
+                  Conteúdo
+                </a>
+
+                <a
+                  href="products.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-package-icon lucide-package text-gray-400"
+                  >
+                    <path
+                      d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
+                    />
+                    <path d="M12 22V12" />
+                    <polyline points="3.29 7 12 12 20.71 7" />
+                    <path d="m7.5 4.27 9 5.15" />
+                  </svg>
+                  Produtos
+                </a>
+
+                <a
+                  href="about.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                  Sobre nós
+                </a>
+
+                <a
+                  href="contacts.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    x
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  Contacte-nos
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="max-w-6xl mx-auto w-full px-8 py-6">
+          <h2
+            class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl"
+          >
+            Produtos
+          </h2>
+          <p
+            class="mt-4 text-pretty text-md font-light text-gray-600 sm:text-md/8"
+          >
+            Descubra nossa colecção exclusiva de produtos SBF. Todos os itens
+            estão disponíveis através dos nossos parceiros e revendedores
+            autorizados.
+          </p>
+        </div>
+
+        <!-- Product grid with uniform sizing -->
+        <div class="max-w-6xl mx-auto w-full px-8 pt-6 pb-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product 1: SBF Hoodie -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/1.jpg"
+                  alt="SBF Hoodie"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Premium</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      Hoodie SBF
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-blue-500 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-black mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-gray-400"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€59,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  Hoodie premium 100% algodão orgânico com o logotipo SBF
+                  bordado. Disponível em tamanhos S, M, L e XL.
+                </p>
+              </div>
+            </div>
+
+            <!-- Product 2: Leather Pouch -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/morroco.jpg"
+                  alt="Bolsa de couro para tabaco"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-amber-600 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Artesanal</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      Bolsa de Couro
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-amber-700 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-amber-500"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€34,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  Bolsa de couro feita à mão por artesãos marroquinos, ideal
+                  para guardar e preparar o seu tabaco.
+                </p>
+              </div>
+            </div>
+
+            <!-- Product 3: Tobacco Scissors -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/beldi.jpeg"
+                  alt="Tesoura para tabaco"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-gray-700 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Precisão</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      Tesoura Especializada
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-gray-700 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-gray-400"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€29,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  Tesoura de precisão em aço inoxidável para preparação perfeita
+                  da sua mistura.
+                </p>
+              </div>
+            </div>
+
+            <!-- Product 4: Premium Grinder -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/2.jpg"
+                  alt="Grinder premium"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Premium</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      Grinder Premium SBF
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-gray-800 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-blue-700 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-green-700"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€44,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  Grinder de alumínio aeroespacial com 4 compartimentos e dentes
+                  de precisão.
+                </p>
+              </div>
+            </div>
+
+            <!-- Product 5: Handcrafted Pipe -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/about2.png"
+                  alt="Cachimbo artesanal"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-amber-600 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Artesanal</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      Cachimbo Artesanal Rif
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-amber-900 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-amber-700"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€89,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  Cachimbo tradicional feito à mão por artesãos das montanhas do
+                  Rif.
+                </p>
+              </div>
+            </div>
+
+            <!-- Product 6: SBF T-Shirt -->
+            <div
+              class="group bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src="src/assets/about1.png"
+                  alt="T-shirt SBF"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <span
+                  class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full"
+                  >Edição Limitada</span
+                >
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-base font-medium text-gray-800">
+                      T-shirt SBF
+                    </h3>
+                    <div class="flex mt-1.5">
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-white border border-gray-300 mr-1"
+                      ></span>
+                      <span
+                        class="inline-block h-3 w-3 rounded-full bg-black"
+                      ></span>
+                    </div>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded"
+                    >€29,99</span
+                  >
+                </div>
+                <p class="mt-3 text-sm text-gray-600 font-light line-clamp-3">
+                  T-shirt em algodão orgânico 100% com estampado exclusivo
+                  inspirado nas tradições canábicas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

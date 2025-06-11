@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBF - Marrocos</title>
+    <link href="output.css" rel="stylesheet" />
+    <link href="/src/assets/inter.css" rel="stylesheet" />
+    <script defer src="/src/assets/alpine.js"></script>
+  </head>
+  <body
+    x-data="{ 
+    showBookingModal: false,
+    packageAvailability: {},
+    availableDates: [],
+    availabilityLoading: true,
+    availabilityError: null,
+    
+    async fetchPackageAvailability() {
+      try {
+        this.availabilityLoading = true;
+        this.availabilityError = null;
+        
+        // Replace with your actual Google Apps Script URL
+        const response = await fetch('https://script.google.com/macros/s/AKfycbz6msTPPs_OGvHP4YBTaCBiznSwRj2Gge-0T5q2mVFH82zsaasx67IyZkwKhyxEcUnzMg/exec');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.packageAvailability = result.data.packages;
+          this.availableDates = result.data.dates;
+        } else {
+          this.availabilityError = 'Erro ao carregar disponibilidade dos pacotes';
+          console.error('Erro na disponibilidade dos pacotes:', result.error);
+        }
+      } catch (error) {
+        this.availabilityError = 'Erro de ligação';
+        console.error('Erro de conexão:', error);
+      } finally {
+        this.availabilityLoading = false;
+      }
+    },
+    
+    isPackageAvailable(packageId) {
+      // Map package IDs to sheet names
+      const packageMap = {
+        'private': 'private',
+        'chapa-dux': 'chapa-dux', 
+        'trindade': 'trindade',
+        'quatro-vinte': 'quatro-vinte',
+        'high-five': 'high-five'
+      };
+      
+      const sheetName = packageMap[packageId];
+      return this.packageAvailability[sheetName] === true;
+    }
+  }"
+    x-init="fetchPackageAvailability()"
+  >
+    <div class="relative">
+      <!-- Content container -->
+      <div class="relative flex flex-col overflow-hidden">
+        <header
+          class="relative z-20"
+          x-data="{
+            mobileMenuOpen: false,
+            screenWidth: window.innerWidth,
+            init() {
+              window.addEventListener('resize', () => {
+                  this.screenWidth = window.innerWidth;
+              });
+              this.$watch('screenWidth', (value) => {
+                  if (value >= 768) {
+                    this.mobileMenuOpen = false;
+                  }
+              });
+            }
+          }"
+        >
+          <nav
+            class="mx-auto flex max-w-6xl items-center justify-between py-6 px-8"
+            aria-label="Global"
+          >
+            <a href="index.html">
+              <span class="sr-only">SBF</span>
+              <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
+            </a>
+            <div class="flex lg:hidden">
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md text-black"
+                @click="mobileMenuOpen = true"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 12h16" />
+                  <path d="M4 18h16" />
+                  <path d="M4 6h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-10">
+              <a
+                href="trips.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Viagens</a
+              >
+              <a
+                href="content.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Conteúdo</a
+              >
+              <a
+                href="products.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Produtos</a
+              >
+              <a
+                href="about.html"
+                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                >Sobre nós</a
+              >
+            </div>
+          </nav>
+
+          <!-- Mobile menu -->
+          <div
+            class="lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            x-show="mobileMenuOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-cloak
+            style="z-index: 50"
+          >
+            <div class="fixed inset-0 z-50 bg-black/70"></div>
+            <div
+              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm"
+            >
+              <div class="flex items-center justify-between pl-6 pr-8 py-6">
+                <a href="#" class="focus:outline-none">
+                  <span class="sr-only">SBF</span>
+                  <img
+                    class="h-16 w-auto"
+                    src="src/assets/logo.png"
+                    alt="SBF"
+                  />
+                </a>
+                <button
+                  type="button"
+                  class="rounded-md text-black"
+                  @click="mobileMenuOpen = false"
+                >
+                  <span class="sr-only">Close menu</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-x-icon lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                class="divide-y divide-gray-400/30 border-y border-gray-400/30"
+              >
+                <a
+                  href="trips.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400"
+                  >
+                    <path
+                      d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
+                    />
+                    <path d="M8 10h8" />
+                    <path d="M8 18h8" />
+                    <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6" />
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  Viagens
+                </a>
+
+                <a
+                  href="content.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-folder-icon lucide-folder text-gray-400"
+                  >
+                    <path
+                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+                    />
+                  </svg>
+                  Conteúdo
+                </a>
+
+                <a
+                  href="products.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-package-icon lucide-package text-gray-400"
+                  >
+                    <path
+                      d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
+                    />
+                    <path d="M12 22V12" />
+                    <polyline points="3.29 7 12 12 20.71 7" />
+                    <path d="m7.5 4.27 9 5.15" />
+                  </svg>
+                  Produtos
+                </a>
+
+                <a
+                  href="about.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                  Sobre nós
+                </a>
+
+                <a
+                  href="contacts.html"
+                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    x
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="flex-none text-gray-400"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  Contacte-nos
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Hero section with back button -->
+        <div class="max-w-6xl mx-auto w-full px-8 py-6 relative">
+          <a
+            href="trips.html"
+            class="inline-flex items-center text-sm/6 font-medium text-blue-600 hover:text-blue-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2"
+            >
+              <path d="m12 19-7-7 7-7"></path>
+              <path d="M19 12H5"></path>
+            </svg>
+            Voltar
+          </a>
+
+          <!-- Reservar button - absolute positioned -->
+          <button
+            @click="showBookingModal = true"
+            class="absolute top-6 right-8 inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
+          >
+            Reservar
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="ml-2 -mr-1 h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </button>
+
+          <!-- Title and description section -->
+          <div class="mb-4">
+            <div class="pr-32">
+              <div class="relative">
+                <h1
+                  class="text-5xl font-bold text-gray-900 mt-2 mb-4 leading-tight"
+                >
+                  Marrocos<span class="text-blue-500">.</span>
+                </h1>
+                <div class="w-20 h-1 bg-blue-500 mb-6"></div>
+                <div class="inline-flex items-center mb-6">
+                  <div class="flex items-center mr-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-blue-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span class="ml-2 text-gray-700 text-sm">8 dias</span>
+                  </div>
+                  <div class="flex items-center mr-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-blue-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="ml-2 text-gray-700 text-sm"
+                      >A partir de 675€</span
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-blue-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span class="ml-2 text-gray-700 text-sm"
+                      >Até 5 pessoas</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <p class="text-base/7 text-gray-600 font-light mb-6">
+                Uma jornada mágica de imersão cultural pelas montanhas do Rif,
+                onde cada rua azul conta uma história milenar. Explore a
+                autêntica cultura marroquina, desfrute da gastronomia local e
+                descubra as tradições canábicas ancestrais cultivadas há séculos
+                nesta região única. Uma experiência sensorial completa que
+                combina aventura, conhecimento e relaxamento no coração de
+                Marrocos.
+              </p>
+              <p class="text-base/7 text-gray-600 font-light">
+                Durante
+                <span class="bg-blue-100 px-1 rounded"
+                  >8 dias transformadores</span
+                >, você mergulhará profundamente nos segredos da cultura local —
+                da arquitetura que desafia o tempo ao artesanato que carrega
+                técnicas ancestrais, da gastronomia que explode em sabores às
+                tradições agrícolas que moldam a identidade única desta região
+                mágica.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex justify-center gap-7 overflow-hidden pt-6">
+            <!-- Photo 1 -->
+            <div class="relative flex flex-col items-center">
+              <div
+                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+              >
+                <img
+                  src="src/assets/1.jpg"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+              <h3 class="mt-4 text-base font-medium text-gray-900">Marrocos</h3>
+              <p class="text-sm text-gray-600">Chefchaouen</p>
+            </div>
+
+            <!-- Photo 2 -->
+            <div class="relative flex flex-col items-center">
+              <div
+                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2"
+              >
+                <img
+                  src="src/assets/2.jpg"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+              <h3 class="mt-4 text-base font-medium text-gray-900">Índia</h3>
+              <p class="text-sm text-gray-600">Taj Mahal</p>
+            </div>
+
+            <!-- Photo 3 -->
+            <div class="relative flex flex-col items-center">
+              <div
+                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+              >
+                <img
+                  src="src/assets/3.jpg"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+              <h3 class="mt-4 text-base font-medium text-gray-900">Japão</h3>
+              <p class="text-sm text-gray-600">Kyoto</p>
+            </div>
+
+            <!-- Photo 4 -->
+            <div class="relative flex flex-col items-center">
+              <div
+                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+              >
+                <img
+                  src="src/assets/4.jpg"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+              <h3 class="mt-4 text-base font-medium text-gray-900">
+                Tailândia
+              </h3>
+              <p class="text-sm text-gray-600">Bangkok</p>
+            </div>
+
+            <!-- Photo 5 -->
+            <div class="relative flex flex-col items-center">
+              <div
+                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2 group cursor-pointer"
+                onclick="window.location.href='gallery.html'"
+              >
+                <img
+                  src="src/assets/5.jpg"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <!-- See more overlay - permanently visible -->
+                <div
+                  class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 group-hover:bg-opacity-50"
+                >
+                  <div class="text-center text-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-8 w-8 mx-auto mb-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span class="text-sm font-semibold">Ver mais</span>
+                  </div>
+                </div>
+              </div>
+              <h3 class="mt-4 text-base font-medium text-gray-900">Brasil</h3>
+              <p class="text-sm text-gray-600">Rio de Janeiro</p>
+            </div>
+          </div>
+
+          <!-- Tabbed content section -->
+          <div class="mb-6">
+            <!-- Experiência Section -->
+            <div class="mt-8">
+              <!-- What's Included section with cards -->
+              <div class="mt-6">
+                <div class="flex items-center mb-6">
+                  <h2 class="text-2xl font-semibold text-gray-900">
+                    O que está incluído na sua jornada
+                  </h2>
+                  <!-- <div class="ml-4 h-0.5 bg-blue-500 flex-grow"></div> -->
+                </div>
+                <p class="text-base/7 text-gray-600 font-light mb-8">
+                  A nossa experiência completa em Marrocos foi cuidadosamente
+                  planejada para oferecer o máximo conforto e imersão cultural,
+                  com todos os detalhes pensados para você aproveitar cada
+                  momento.
+                </p>
+
+                <!-- Features grid -->
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
+                >
+                  <!-- Card 1 -->
+                  <div
+                    class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 hover:border-blue-300"
+                  >
+                    <div class="p-5">
+                      <div class="flex items-center mb-4">
+                        <div
+                          class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                            />
+                          </svg>
+                        </div>
+                        <h3
+                          class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                        >
+                          Alojamento
+                        </h3>
+                      </div>
+                      <p class="text-gray-600 text-sm leading-relaxed">
+                        7 noites em apartamentos privativos, com charme
+                        tradicional mas equipados com comodidades modernas.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Card 2 -->
+                  <div
+                    class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 hover:border-blue-300"
+                  >
+                    <div class="p-5">
+                      <div class="flex items-center mb-4">
+                        <div
+                          class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <h3
+                          class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                        >
+                          Transporte
+                        </h3>
+                      </div>
+                      <p class="text-gray-600 text-sm leading-relaxed">
+                        Voos diretos Lisboa-Tânger, traslados e transporte
+                        privado durante toda a estadia para todas as atividades.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Card 3 -->
+                  <div
+                    class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 hover:border-blue-300"
+                  >
+                    <div class="p-5">
+                      <div class="flex items-center mb-4">
+                        <div
+                          class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                            />
+                          </svg>
+                        </div>
+                        <h3
+                          class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                        >
+                          Experiências
+                        </h3>
+                      </div>
+                      <p class="text-gray-600 text-sm leading-relaxed">
+                        Workshops, visitas guiadas, demonstrações culturais e
+                        experiências autênticas com moradores locais.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Card 4 -->
+                  <div
+                    class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 hover:border-blue-300"
+                  >
+                    <div class="p-5">
+                      <div class="flex items-center mb-4">
+                        <div
+                          class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                            />
+                          </svg>
+                        </div>
+                        <h3
+                          class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                        >
+                          Aventuras
+                        </h3>
+                      </div>
+                      <p class="text-gray-600 text-sm leading-relaxed">
+                        Passeios de quad, trilhas nas montanhas, visitas às
+                        cascatas de Akchour e à impressionante Ponte de Deus.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Experience details -->
+                <div class="grid grid-rows-1 lg:grid-rows-2 gap-10">
+                  <!-- Cultural Experience -->
+                  <div class="p-6 rounded-xl shadow-sm border border-blue-100">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                          />
+                        </svg>
+                      </div>
+                      <h3
+                        class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                      >
+                        Imersão cultural
+                      </h3>
+                    </div>
+
+                    <p
+                      class="text-base/7 text-gray-600 font-light mb-5 border-l-2 border-blue-200 pl-4 italic"
+                    >
+                      "Chefchaouen não é apenas um lugar para se visitar, mas
+                      para se viver. Cada canto da cidade azul revela séculos de
+                      tradições e uma cultura viva que cativa todos os
+                      sentidos."
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Passeios pela Medina
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Explore as fascinantes ruelas azuis com guias locais
+                          que revelam histórias e segredos ancestrais.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Gastronomia Marroquina
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Descubra sabores exóticos em aulas culinárias práticas
+                          e degustações de especiarias.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Artesanato Local
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Participe de workshops práticos com mestres artesãos e
+                          crie suas próprias peças.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Música e Tradições
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Noites de música tradicional com percussão gnawa e
+                          apresentações culturais locais.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Cannabis Experience -->
+                  <div class="p-6 rounded-xl shadow-sm border border-blue-100">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
+                        </svg>
+                      </div>
+                      <h3
+                        class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                      >
+                        Experiência Canábica
+                      </h3>
+                    </div>
+
+                    <p
+                      class="text-base/7 text-gray-600 font-light mb-5 border-l-2 border-blue-200 pl-4 italic"
+                    >
+                      "Nas montanhas do Rif, cada planta conta uma história
+                      milenar. Aqui, o cultivo da cannabis é mais do que
+                      agricultura — é uma tradição cultural transmitida de
+                      geração em geração, um conhecimento ancestral preservado
+                      no tempo."
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Visitas a Plantações
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Explore os campos tradicionais com agricultores locais
+                          e aprenda sobre métodos de cultivo sustentáveis
+                          praticados há séculos.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Workshops de Processamento
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Participe de demonstrações autênticas de métodos
+                          tradicionais de extração e processamento artesanal.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Degustação Educativa
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Sessões educativas sobre terroir, características
+                          regionais e a influência do clima nas diferentes
+                          variedades.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                              />
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            História e Cultura
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Descubra a rica história do cultivo na região e seu
+                          papel na economia e cultura local ao longo dos
+                          séculos.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Nature and Adventure section -->
+                  <div class="p-6 rounded-xl shadow-sm border border-blue-100">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                          />
+                        </svg>
+                      </div>
+                      <h3
+                        class="text-lg font-medium text-gray-900 ml-3 group-hover:text-blue-700 transition-colors"
+                      >
+                        Natureza e Aventura
+                      </h3>
+                    </div>
+
+                    <p
+                      class="text-base/7 text-gray-600 font-light mb-5 border-l-2 border-blue-200 pl-4 italic"
+                    >
+                      "As montanhas do Rif guardam tesouros naturais únicos no
+                      mundo. Aqui, a natureza selvagem encontra-se com aventuras
+                      inesquecíveis, criando memórias que ficarão gravadas para
+                      sempre na alma."
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <img
+                          src="src/assets/1.jpg"
+                          alt="Cascatas de Akchour"
+                          class="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Cascatas de Akchour
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Explore as deslumbrantes cascatas de água cristalina
+                          em meio às montanhas do Rif. Um paraíso natural a
+                          apenas 30 minutos de Chefchaouen.
+                        </p>
+                      </div>
+
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <img
+                          src="src/assets/beldi.jpeg"
+                          alt="Aventura de Quad"
+                          class="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Aventura de Quad
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Percorra trilhas remotas nas montanhas a bordo de quad
+                          bikes, visitando áreas isoladas de cultivo tradicional
+                          e desfrutando de vistas panorâmicas.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Additional adventure activities -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 7l4-4m0 0l4 4m-4-4v18"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Ponte de Deus
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Visite esta impressionante formação rochosa natural,
+                          uma ponte de pedra esculpida pela natureza ao longo de
+                          milénios.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Trilhas nas Montanhas
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Caminhadas guiadas pelos caminhos ancestrais do Rif,
+                          descobrindo flora endémica e vistas espetaculares.
+                        </p>
+                      </div>
+                      <div
+                        class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+                      >
+                        <div class="flex items-center mb-3">
+                          <div
+                            class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                          >
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              ></path>
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              ></path>
+                            </svg>
+                          </div>
+                          <h4 class="font-medium text-gray-900">
+                            Miradouros Panorâmicos
+                          </h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                          Acesso a pontos de vista únicos com vistas
+                          deslumbrantes sobre os vales e a cidade azul de
+                          Chefchaouen.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Packages Section -->
+              <div id="packages-section" class="mt-12">
+                <!-- What's included checklist -->
+
+                <div class="flex items-center mb-6">
+                  <h2 class="text-2xl font-semibold text-gray-900">
+                    Pacotes e preços
+                  </h2>
+                  <!-- <div class="ml-4 h-0.5 bg-blue-500 flex-grow"></div> -->
+                </div>
+                <p class="text-base/7 text-gray-600 font-light">
+                  Oferecemos diferentes opções de pacotes adaptados ao seu
+                  grupo. Todos incluem voos, hospedagem, transporte e todas as
+                  experiências descritas. Escolha o pacote ideal para sua
+                  aventura em Marrocos.
+                </p>
+
+                <div
+                  class="mt-8 bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg"
+                >
+                  <h3 class="text-md font-medium text-gray-900 mb-4">
+                    O que está incluído em todos os pacotes:
+                  </h3>
+                  <ul
+                    class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-gray-600"
+                  >
+                    <li class="flex items-center text-base">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Voos de ida e volta Lisboa - Tânger
+                    </li>
+                    <li class="flex items-start">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Alojamento privado por 7 noites
+                    </li>
+                    <li class="flex items-start">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Transporte privado durante toda a estadia
+                    </li>
+                    <li class="flex items-start">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Todas as experiências e workshops
+                    </li>
+                    <li class="flex items-start">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Entrada em todos os locais de visita
+                    </li>
+                    <li class="flex items-start">
+                      <svg
+                        class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Guia especializado durante toda a viagem
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="mt-10 ring-1 ring-gray-300 sm:rounded-lg">
+                  <!-- Loading state -->
+                  <div x-show="availabilityLoading" class="p-8 text-center">
+                    <div class="inline-flex items-center">
+                      <svg
+                        class="animate-spin mr-3 h-5 w-5 text-blue-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      <span class="text-sm text-gray-600"
+                        >A carregar pacotes disponíveis...</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Error state -->
+                  <div
+                    x-show="availabilityError && !availabilityLoading"
+                    class="p-8 text-center"
+                  >
+                    <div class="text-red-600 mb-2">
+                      <svg
+                        class="w-6 h-6 mx-auto mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                      <span x-text="availabilityError"></span>
+                    </div>
+                    <button
+                      @click="fetchPackageAvailability()"
+                      class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    >
+                      Tentar novamente
+                    </button>
+                  </div>
+
+                  <!-- Package table -->
+                  <table
+                    x-show="!availabilityLoading && !availabilityError"
+                    class="min-w-full divide-y divide-gray-300"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        >
+                          Pacote
+                        </th>
+                        <th
+                          scope="col"
+                          class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                        >
+                          Pessoas
+                        </th>
+                        <th
+                          scope="col"
+                          class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                        >
+                          Alojamento
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Total
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Estado
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        :class="isPackageAvailable('private') ? '' : 'opacity-50'"
+                      >
+                        <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div class="font-semibold text-lg text-blue-700">
+                            PRIVATE
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            Experiência individual
+                          </div>
+                        </td>
+                        <td
+                          class="hidden px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="hidden px-3 py-3.5 text-sm text-medium text-gray-600 lg:table-cell"
+                        >
+                          Apartamento T1 privado
+                        </td>
+                        <td class="px-3 py-3.5 text-sm text-gray-500">
+                          <div class="font-semibold text-lg text-blue-700">
+                            1000€
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            1000€ por pessoa
+                          </div>
+                        </td>
+                        <td class="px-3 py-3.5 text-sm">
+                          <span
+                            x-show="isPackageAvailable('private')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            Disponível
+                          </span>
+                          <span
+                            x-show="!isPackageAvailable('private')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                          >
+                            Esgotado
+                          </span>
+                        </td>
+                      </tr>
+                      <tr
+                        :class="isPackageAvailable('chapa-dux') ? '' : 'opacity-50'"
+                      >
+                        <td
+                          class="relative border-t border-transparent py-4 pl-4 pr-3 text-sm sm:pl-6"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            CHAPA-DUX
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            Para casais ou amigos
+                          </div>
+
+                          <div
+                            class="absolute -top-px left-6 right-0 h-px bg-gray-200"
+                          ></div>
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-600 lg:table-cell"
+                        >
+                          Apartamento T1 ou T2 privado
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            1500€
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            750€ por pessoa
+                          </div>
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm"
+                        >
+                          <span
+                            x-show="isPackageAvailable('chapa-dux')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            Disponível
+                          </span>
+                          <span
+                            x-show="!isPackageAvailable('chapa-dux')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                          >
+                            Esgotado
+                          </span>
+                        </td>
+                      </tr>
+                      <tr
+                        :class="isPackageAvailable('trindade') ? '' : 'opacity-50'"
+                      >
+                        <td
+                          class="relative border-t border-transparent py-4 pl-4 pr-3 text-sm sm:pl-6"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            A TRINDADE
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            Para grupos de 3
+                          </div>
+
+                          <div
+                            class="absolute -top-px left-6 right-0 h-px bg-gray-200"
+                          ></div>
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-600 lg:table-cell"
+                        >
+                          2 Apartamentos (T2+T1)
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            2175€
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            725€ por pessoa
+                          </div>
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm"
+                        >
+                          <span
+                            x-show="isPackageAvailable('trindade')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            Disponível
+                          </span>
+                          <span
+                            x-show="!isPackageAvailable('trindade')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                          >
+                            Esgotado
+                          </span>
+                        </td>
+                      </tr>
+                      <tr
+                        :class="isPackageAvailable('quatro-vinte') ? '' : 'opacity-50'"
+                      >
+                        <td
+                          class="relative border-t border-transparent py-4 pl-4 pr-3 text-sm sm:pl-6"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            4 E VINTE
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            Para grupos de 4
+                          </div>
+
+                          <div
+                            class="absolute -top-px left-6 right-0 h-px bg-gray-200"
+                          ></div>
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-600 lg:table-cell"
+                        >
+                          2 Apartamentos (T2+T2)
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            2800€
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            700€ por pessoa
+                          </div>
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm"
+                        >
+                          <span
+                            x-show="isPackageAvailable('quatro-vinte')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            Disponível
+                          </span>
+                          <span
+                            x-show="!isPackageAvailable('quatro-vinte')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                          >
+                            Esgotado
+                          </span>
+                        </td>
+                      </tr>
+                      <tr
+                        :class="isPackageAvailable('high-five') ? '' : 'opacity-50'"
+                      >
+                        <td
+                          class="relative border-t border-transparent py-4 pl-4 pr-3 text-sm sm:pl-6"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            HIGH-FIVE
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            Para grupos de 5
+                          </div>
+                          <div
+                            class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden"
+                          >
+                            <span>5 pessoas</span>
+                            <span class="hidden sm:inline">·</span>
+                            <span>3 Apartamentos (T2+T2+T1)</span>
+                          </div>
+                          <div
+                            class="absolute -top-px left-6 right-0 h-px bg-gray-200"
+                          ></div>
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                        >
+                          5
+                        </td>
+                        <td
+                          class="hidden border-t border-gray-200 px-3 py-3.5 text-sm text-gray-600 lg:table-cell"
+                        >
+                          3 Apartamentos (T2+T2+T1)
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500"
+                        >
+                          <div class="font-semibold text-lg text-blue-700">
+                            3375€
+                          </div>
+                          <div class="mt-1 text-sm text-gray-600 font-light">
+                            625€ por pessoa
+                          </div>
+                        </td>
+                        <td
+                          class="border-t border-gray-200 px-3 py-3.5 text-sm"
+                        >
+                          <span
+                            x-show="isPackageAvailable('high-five')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                          >
+                            Disponível
+                          </span>
+                          <span
+                            x-show="!isPackageAvailable('high-five')"
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                          >
+                            Esgotado
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Enhanced CTA section -->
+              <div
+                class="mt-10 bg-gradient-to-r from-blue-50 via-white to-blue-50 p-8 rounded-xl border border-blue-100 shadow-sm text-center"
+              >
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">
+                  Pronto para viver essa experiência única?
+                </h3>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-6">
+                  Junte-se a nós nesta viagem inesquecível pelas montanhas do
+                  Rif e descubra os segredos da cidade azul. Vagas limitadas
+                  para garantir uma experiência exclusiva e personalizada.
+                </p>
+
+                <button
+                  @click="showBookingModal = true"
+                  class="inline-flex items-center px-6 py-3.5 border border-transparent text-base font-medium rounded-md shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
+                >
+                  Reserve a sua experiência
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="ml-2 -mr-1 h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </button>
+                <p class="text-gray-500 text-sm mt-6">
+                  Não fique de fora – as próximas viagens já estão com vagas
+                  preenchidas.
+                </p>
+              </div>
+            </div>
+
+            <!-- Booking Modal -->
+            <div
+              x-show="showBookingModal"
+              x-cloak
+              class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              @click.self="closeModal()"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+            >
+              <div
+                class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+                x-data="{
+                  currentStep: 1,
+                  selectedPackage: null,
+                  selectedDate: '',
+                  bookingComplete: false,
+                  travelerInfo: {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    specialRequests: ''
+                  },
+                  packages: [
+                    { id: 'private', name: 'PRIVATE', people: 1, price: 1000, pricePerPerson: 1000, description: 'Experiência individual exclusiva', accommodation: 'Apartamento T1 privado', paymentLink: 'https://payment-link-for-private-package.com' },
+                    { id: 'chapa-dux', name: 'CHAPA-DUX', people: 2, price: 1500, pricePerPerson: 750, description: 'Perfeito para casais ou amigos', accommodation: 'Apartamento T1 ou T2 privado', paymentLink: 'https://payment-link-for-chapa-dux-package.com' },
+                    { id: 'trindade', name: 'A TRINDADE', people: 3, price: 2175, pricePerPerson: 725, description: 'Para grupos de 3 pessoas', accommodation: '2 Apartamentos (T2+T1)', paymentLink: 'https://payment-link-for-trindade-package.com' },
+                    { id: 'quatro-vinte', name: '4 E VINTE', people: 4, price: 2800, pricePerPerson: 700, description: 'Para grupos de 4 pessoas', accommodation: '2 Apartamentos (T2+T2)', paymentLink: 'https://payment-link-for-quatro-vinte-package.com' },
+                    { id: 'high-five', name: 'HIGH-FIVE', people: 5, price: 3375, pricePerPerson: 675, description: 'Para grupos de 5 pessoas', accommodation: '3 Apartamentos (T2+T2+T1)', paymentLink: 'https://payment-link-for-high-five-package.com' }
+                  ],
+                  get availablePackages() {
+                    // Access parent scope properly
+                    const parentComponent = this.$el.closest('body')._x_dataStack[0];
+                    return this.packages.filter(pkg => parentComponent.isPackageAvailable(pkg.id));
+                  },
+                  get parentAvailabilityLoading() {
+                    const parentComponent = this.$el.closest('body')._x_dataStack[0];
+                    return parentComponent.availabilityLoading;
+                  },
+                  get parentAvailabilityError() {
+                    const parentComponent = this.$el.closest('body')._x_dataStack[0];
+                    return parentComponent.availabilityError;
+                  },
+                  refreshAvailability() {
+                    const parentComponent = this.$el.closest('body')._x_dataStack[0];
+                    parentComponent.fetchPackageAvailability();
+                  },
+                  get availableDates() {
+                    // Access parent scope properly
+                    const parentComponent = this.$el.closest('body')._x_dataStack[0];
+                    return parentComponent.availableDates || [];
+                  },
+                  isValidEmail(email) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                  },
+                  nextStep() {
+                    if (this.currentStep < 4) {
+                      this.currentStep++;
+                    }
+                  },
+                  prevStep() {
+                    if (this.currentStep > 1) {
+                      this.currentStep--;
+                    }
+                  },
+                  selectPackage(pkg) {
+                    this.selectedPackage = pkg;
+                  },
+                  submitBooking() {
+                    this.saveToGoogleSheets();
+                    this.currentStep = 4;
+                  },
+                  saveToGoogleSheets() {
+                    const formData = {
+                      timestamp: new Date().toISOString(),
+                      packageName: this.selectedPackage?.name,
+                      selectedDate: this.getSelectedDateData()?.label,
+                      flightDeparture: this.getSelectedDateData()?.departure + ' - ' + this.getSelectedDateData()?.arrival,
+                      flightReturn: this.getSelectedDateData()?.returnDeparture + ' - ' + this.getSelectedDateData()?.returnArrival,
+                      firstName: this.travelerInfo.firstName,
+                      lastName: this.travelerInfo.lastName,
+                      email: this.travelerInfo.email,
+                      phone: this.travelerInfo.phone,
+                      specialRequests: this.travelerInfo.specialRequests,
+                    };
+
+                    // Replace this URL with your Google Apps Script web app URL
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbz6msTPPs_OGvHP4YBTaCBiznSwRj2Gge-0T5q2mVFH82zsaasx67IyZkwKhyxEcUnzMg/exec';
+
+                    fetch(scriptURL, {
+                      method: 'POST',
+                      mode: 'no-cors',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(formData)
+                    })
+                    .then(() => {
+                      console.log('Dados enviados para Google Sheets com sucesso');
+                    })
+                    .catch(error => {
+                      console.error('Erro ao enviar dados:', error);
+                    });
+                  },
+                  proceedToPayment() {
+                    const selectedPackageData = this.getSelectedPackageData();
+                    if (selectedPackageData && selectedPackageData.paymentLink) {
+                      window.open(selectedPackageData.paymentLink, '_blank');
+                    } else {
+                      // Fallback in case there's no payment link
+                      console.error('Link de pagamento não encontrado para o pacote selecionado');
+                    }
+                  },
+                  getSelectedPackageData() {
+                    return this.packages.find(pkg => pkg.id === this.selectedPackage?.id);
+                  },
+                  getSelectedDateData() {
+                    return this.availableDates.find(date => date.id === this.selectedDate);
+                  },
+                  resetForm() {
+                    this.currentStep = 1;
+                    this.selectedPackage = null;
+                    this.selectedDate = '';
+                    this.travelerInfo = {
+                      firstName: '',
+                      lastName: '',
+                      email: '',
+                      phone: '',
+                      specialRequests: ''
+                    };
+                  },
+                  closeModal() {
+                    this.showBookingModal = false;
+                    // Reset form after closing animation completes (200ms + 50ms buffer)
+                    setTimeout(() => {
+                      this.resetForm();
+                    }, 250);
+                  }
+                }"
+              >
+                <!-- Modal Header -->
+                <div
+                  class="relative bg-white px-4 py-4 border-b border-gray-200"
+                >
+                  <!-- Close button -->
+                  <button
+                    @click="closeModal()"
+                    class="absolute top-4 right-4 w-8 h-8 border border-gray-200 hover:bg-gray-50 rounded-full flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      ></path>
+                    </svg>
+                  </button>
+
+                  <div class="flex justify-center" x-show="!bookingComplete">
+                    <!-- Progress Steps -->
+                    <div class="flex items-center w-full max-w-xs sm:max-w-lg">
+                      <div class="flex items-center space-x-2">
+                        <div
+                          :class="currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'"
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
+                        >
+                          1
+                        </div>
+                        <span
+                          :class="currentStep >= 1 ? 'text-gray-900' : 'text-gray-500'"
+                          class="text-sm font-medium hidden md:inline"
+                          >Pacote</span
+                        >
+                      </div>
+                      <div class="flex-1 mx-3 h-0.5 bg-gray-200">
+                        <div
+                          :class="currentStep >= 2 ? 'w-full' : 'w-0'"
+                          class="h-full bg-blue-600 transition-all duration-300"
+                        ></div>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <div
+                          :class="currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'"
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
+                        >
+                          2
+                        </div>
+                        <span
+                          :class="currentStep >= 2 ? 'text-gray-900' : 'text-gray-500'"
+                          class="text-sm font-medium hidden md:inline"
+                          >Data</span
+                        >
+                      </div>
+                      <div class="flex-1 mx-3 h-0.5 bg-gray-200">
+                        <div
+                          :class="currentStep >= 3 ? 'w-full' : 'w-0'"
+                          class="h-full bg-blue-600 transition-all duration-300"
+                        ></div>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <div
+                          :class="currentStep >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'"
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
+                        >
+                          3
+                        </div>
+                        <span
+                          :class="currentStep >= 3 ? 'text-gray-900' : 'text-gray-500'"
+                          class="text-sm font-medium hidden md:inline"
+                          >Detalhes</span
+                        >
+                      </div>
+                      <div class="flex-1 mx-3 h-0.5 bg-gray-200">
+                        <div
+                          :class="currentStep >= 4 ? 'w-full' : 'w-0'"
+                          class="h-full bg-blue-600 transition-all duration-300"
+                        ></div>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <div
+                          :class="currentStep >= 4 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'"
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
+                        >
+                          4
+                        </div>
+                        <span
+                          :class="currentStep >= 4 ? 'text-gray-900' : 'text-gray-500'"
+                          class="text-sm font-medium hidden md:inline"
+                          >Pagamento</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="flex-1 overflow-y-auto">
+                  <!-- Step 1: Package Selection -->
+                  <div x-show="currentStep === 1" class="p-4">
+                    <div class="text-center mb-6">
+                      <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        Escolha o seu pacote
+                      </h3>
+                      <p class="text-gray-600 text-sm">
+                        Selecione o pacote ideal para o seu grupo. Todos incluem
+                        voos, hospedagem e experiências completas.
+                      </p>
+                    </div>
+
+                    <!-- Loading state for modal -->
+                    <div
+                      x-show="parentAvailabilityLoading"
+                      class="ring-1 ring-gray-300 sm:rounded-lg py-8 text-center"
+                    >
+                      <div class="inline-flex items-center">
+                        <svg
+                          class="animate-spin mr-3 h-5 w-5 text-blue-600"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span class="text-sm text-gray-600"
+                          >A carregar pacotes disponíveis...</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Error state for modal -->
+                    <div
+                      x-show="parentAvailabilityError && !parentAvailabilityLoading"
+                      class="p-8 text-center"
+                    >
+                      <div class="text-red-600 mb-2">
+                        <svg
+                          class="w-6 h-6 mx-auto mb-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                        <span x-text="parentAvailabilityError"></span>
+                      </div>
+                      <button
+                        @click="refreshAvailability()"
+                        class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      >
+                        Tentar novamente
+                      </button>
+                    </div>
+
+                    <div
+                      x-show="!parentAvailabilityLoading && !parentAvailabilityError"
+                      class="-mx-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg"
+                    >
+                      <table class="min-w-full divide-y divide-gray-300">
+                        <thead>
+                          <tr>
+                            <th
+                              scope="col"
+                              class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                            >
+                              Pacote
+                            </th>
+                            <th
+                              scope="col"
+                              class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                            >
+                              Pessoas
+                            </th>
+                            <th
+                              scope="col"
+                              class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                            >
+                              Alojamento
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                            >
+                              Preço
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
+                            >
+                              Selecionar
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template
+                            x-for="(pkg, index) in availablePackages"
+                            :key="pkg.id"
+                          >
+                            <tr
+                              @click="selectPackage(pkg)"
+                              :class="selectedPackage?.id === pkg.id ? 'bg-blue-50' : 'hover:bg-gray-50'"
+                              class="transition-colors cursor-pointer"
+                            >
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="relative py-4 pl-4 pr-3 text-sm sm:pl-6"
+                              >
+                                <div>
+                                  <div class="flex items-center gap-2">
+                                    <span
+                                      class="font-semibold text-base text-blue-700"
+                                      x-text="pkg.name"
+                                    ></span>
+                                    <!-- Popular badge for best value -->
+                                    <span
+                                      x-show="pkg.id === 'high-five'"
+                                      class="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full"
+                                      >MELHOR VALOR</span
+                                    >
+                                  </div>
+                                  <div
+                                    class="mt-1 text-xs text-gray-600 font-light"
+                                    x-text="pkg.description"
+                                  ></div>
+                                </div>
+                              </td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="hidden px-3 py-3.5 text-sm text-gray-700 lg:table-cell"
+                                x-text="pkg.people"
+                              ></td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="hidden px-3 py-3.5 text-sm text-gray-600 lg:table-cell"
+                                x-text="pkg.accommodation"
+                              ></td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="px-3 py-3.5 text-sm text-gray-500"
+                              >
+                                <div
+                                  class="font-semibold text-base text-blue-700"
+                                  x-text="pkg.price + '€'"
+                                ></div>
+                                <div
+                                  class="mt-1 text-xs text-gray-600 font-light"
+                                  x-text="pkg.pricePerPerson + '€ por pessoa'"
+                                ></div>
+                              </td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="px-3 py-3.5 text-center"
+                              >
+                                <button
+                                  @click="selectPackage(pkg)"
+                                  class="flex items-center justify-center mx-auto"
+                                >
+                                  <div
+                                    :class="selectedPackage?.id === pkg.id ? 'bg-blue-500 border-blue-500' : 'bg-white border-gray-300'"
+                                    class="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors"
+                                  >
+                                    <svg
+                                      x-show="selectedPackage?.id === pkg.id"
+                                      class="w-2.5 h-2.5 text-white"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="3"
+                                        d="M5 13l4 4L19 7"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                </button>
+                              </td>
+                            </tr>
+                          </template>
+                        </tbody>
+                      </table>
+
+                      <!-- No packages available message -->
+                      <div
+                        x-show="availablePackages.length === 0"
+                        class="p-8 text-center"
+                      >
+                        <div class="text-gray-600 mb-2">
+                          <svg
+                            class="w-8 h-8 mx-auto mb-3 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 11H5m14-7H5m14 14H5"
+                            ></path>
+                          </svg>
+                          <h3 class="text-lg font-medium text-gray-900 mb-2">
+                            Nenhum pacote disponível
+                          </h3>
+                          <p class="text-sm text-gray-500">
+                            Todos os pacotes estão esgotados no momento. Entre
+                            em contacto connosco para mais informações.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 2: Date Selection -->
+                  <div x-show="currentStep === 2" class="p-4">
+                    <div class="text-center mb-6">
+                      <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        Escolha a sua data
+                      </h3>
+                      <p class="text-gray-600 text-sm">
+                        Selecione uma das datas disponíveis. Voos diretos Lisboa
+                        ⇄ Tânger incluídos.
+                      </p>
+                    </div>
+
+                    <!-- Loading state for dates -->
+                    <div
+                      x-show="parentAvailabilityLoading"
+                      class="ring-1 ring-gray-300 sm:rounded-lg py-8 text-center"
+                    >
+                      <div class="inline-flex items-center">
+                        <svg
+                          class="animate-spin mr-3 h-5 w-5 text-blue-600"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span class="text-sm text-gray-600"
+                          >A carregar datas disponíveis...</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Error state for dates -->
+                    <div
+                      x-show="parentAvailabilityError && !parentAvailabilityLoading"
+                      class="p-8 text-center"
+                    >
+                      <div class="text-red-600 mb-2">
+                        <svg
+                          class="w-6 h-6 mx-auto mb-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                        <span x-text="parentAvailabilityError"></span>
+                      </div>
+                      <button
+                        @click="refreshAvailability()"
+                        class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      >
+                        Tentar novamente
+                      </button>
+                    </div>
+
+                    <div
+                      x-show="!parentAvailabilityLoading && !parentAvailabilityError"
+                      class="-mx-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg"
+                    >
+                      <table class="min-w-full divide-y divide-gray-300">
+                        <thead>
+                          <tr>
+                            <th
+                              scope="col"
+                              class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                            >
+                              Data
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
+                            >
+                              <div
+                                class="flex items-center justify-center space-x-1"
+                              >
+                                <span class="text-green-600">✈</span>
+                                <span>Ida (LIS → TNG)</span>
+                              </div>
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
+                            >
+                              <div
+                                class="flex items-center justify-center space-x-1"
+                              >
+                                <span class="text-blue-600">✈</span>
+                                <span>Volta (TNG → LIS)</span>
+                              </div>
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
+                            >
+                              Selecionar
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template
+                            x-for="(date, index) in availableDates"
+                            :key="date.id"
+                          >
+                            <tr
+                              @click="selectedDate = date.id"
+                              :class="selectedDate === date.id ? 'bg-blue-50' : 'hover:bg-gray-50'"
+                              class="transition-colors cursor-pointer"
+                            >
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="relative py-4 pl-4 pr-3 text-sm sm:pl-6"
+                              >
+                                <div>
+                                  <div
+                                    class="text-sm font-semibold text-base text-gray-900"
+                                    x-text="date.label"
+                                  ></div>
+                                </div>
+                              </td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="px-3 py-3.5 text-center text-sm text-gray-700"
+                              >
+                                <div class="space-y-1">
+                                  <div
+                                    class="font-medium text-gray-900"
+                                    x-text="date.departure"
+                                  ></div>
+                                  <div
+                                    class="text-xs text-gray-500"
+                                    x-text="'Chegada: ' + date.arrival"
+                                  ></div>
+                                </div>
+                              </td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="px-3 py-3.5 text-center text-sm text-gray-700"
+                              >
+                                <div class="space-y-1">
+                                  <div
+                                    class="font-medium text-gray-900"
+                                    x-text="date.returnDeparture"
+                                  ></div>
+                                  <div
+                                    class="text-xs text-gray-500"
+                                    x-text="'Chegada: ' + date.returnArrival"
+                                  ></div>
+                                </div>
+                              </td>
+                              <td
+                                :class="index > 0 ? 'border-t border-gray-200' : ''"
+                                class="px-3 py-3.5 text-center"
+                              >
+                                <button
+                                  @click="selectedDate = date.id"
+                                  class="flex items-center justify-center mx-auto"
+                                >
+                                  <div
+                                    :class="selectedDate === date.id ? 'bg-blue-500 border-blue-500' : 'bg-white border-gray-300'"
+                                    class="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors"
+                                  >
+                                    <svg
+                                      x-show="selectedDate === date.id"
+                                      class="w-2.5 h-2.5 text-white"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="3"
+                                        d="M5 13l4 4L19 7"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                </button>
+                              </td>
+                            </tr>
+                          </template>
+                        </tbody>
+                      </table>
+
+                      <!-- No dates available message -->
+                      <div
+                        x-show="availableDates.length === 0"
+                        class="p-8 text-center"
+                      >
+                        <div class="text-gray-600 mb-2">
+                          <svg
+                            class="w-8 h-8 mx-auto mb-3 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            ></path>
+                          </svg>
+                          <h3 class="text-lg font-medium text-gray-900 mb-2">
+                            Nenhuma data disponível
+                          </h3>
+                          <p class="text-sm text-gray-500">
+                            Todas as datas estão esgotadas no momento. Entre em
+                            contacto connosco para mais informações.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 3: Traveler Information -->
+                  <div x-show="currentStep === 3" class="p-6">
+                    <div class="text-center mb-6">
+                      <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        Os seus detalhes
+                      </h3>
+                      <p class="text-gray-600 text-sm">
+                        Complete suas informações para finalizar a reserva.
+                      </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <form class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label
+                              for="first-name"
+                              class="block text-sm font-medium text-gray-900 mb-2"
+                              >Primeiro Nome</label
+                            >
+                            <input
+                              type="text"
+                              id="first-name"
+                              x-model="travelerInfo.firstName"
+                              class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                              placeholder="João"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              for="last-name"
+                              class="block text-sm font-medium text-gray-900 mb-2"
+                              >Último Nome</label
+                            >
+                            <input
+                              type="text"
+                              id="last-name"
+                              x-model="travelerInfo.lastName"
+                              class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                              placeholder="Silva"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label
+                            for="email"
+                            class="block text-sm font-medium text-gray-900 mb-2"
+                            >Email</label
+                          >
+                          <input
+                            type="email"
+                            id="email"
+                            x-model="travelerInfo.email"
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                            placeholder="joao.silva@email.com"
+                          />
+                        </div>
+
+                        <div>
+                          <label
+                            for="phone"
+                            class="block text-sm font-medium text-gray-900 mb-2"
+                            >Telefone</label
+                          >
+                          <input
+                            type="tel"
+                            id="phone"
+                            x-model="travelerInfo.phone"
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                            placeholder="+351 912 345 678"
+                          />
+                        </div>
+
+                        <div>
+                          <label
+                            for="special-requests"
+                            class="block text-sm font-medium text-gray-900 mb-2"
+                            >Pedidos Especiais (opcional)</label
+                          >
+                          <textarea
+                            id="special-requests"
+                            x-model="travelerInfo.specialRequests"
+                            rows="3"
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                            placeholder="Conte-nos sobre alergias alimentares, preferências de quarto, ou qualquer outra necessidade especial..."
+                          ></textarea>
+                        </div>
+                      </form>
+
+                      <!-- Booking Summary -->
+                      <div class="">
+                        <div
+                          class="bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-xl shadow-sm overflow-hidden"
+                        >
+                          <!-- Header -->
+                          <div
+                            class="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5"
+                          >
+                            <div class="flex items-center space-x-2">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-4 w-4 text-white"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                              </svg>
+                              <h4 class="text-sm font-semibold text-white">
+                                Resumo da Reserva
+                              </h4>
+                            </div>
+                          </div>
+
+                          <div
+                            class="p-4 space-y-4 border-l border-r border-b border-blue-100"
+                          >
+                            <!-- Package & Date Info -->
+                            <div class="">
+                              <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600"
+                                  >Pacote:</span
+                                >
+                                <span
+                                  class="font-semibold text-blue-700 text-sm"
+                                  x-text="getSelectedPackageData()?.name"
+                                ></span>
+                              </div>
+                              <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600"
+                                  >Data:</span
+                                >
+                                <span
+                                  class="font-medium text-gray-900 text-sm"
+                                  x-text="getSelectedDateData()?.label"
+                                ></span>
+                              </div>
+                              <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600"
+                                  >Pessoas:</span
+                                >
+                                <span
+                                  class="font-medium text-gray-900 text-sm"
+                                  x-text="getSelectedPackageData()?.people"
+                                ></span>
+                              </div>
+                            </div>
+
+                            <!-- Flight Info -->
+                            <div class="pt-4 mt-4 border-t border-gray-100">
+                              <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                  <div class="flex items-center space-x-1 mb-1">
+                                    <span class="text-green-600">✈</span>
+                                    <span class="font-medium text-gray-700"
+                                      >Voo de Ida</span
+                                    >
+                                  </div>
+                                  <p
+                                    class="text-gray-600 text-xs"
+                                    x-text="getSelectedDateData()?.departure + ' - ' + getSelectedDateData()?.arrival"
+                                  ></p>
+                                </div>
+                                <div>
+                                  <div class="flex items-center space-x-1 mb-1">
+                                    <span class="text-blue-600">✈</span>
+                                    <span class="font-medium text-gray-700"
+                                      >Voo de Volta</span
+                                    >
+                                  </div>
+                                  <p
+                                    class="text-gray-600 text-xs"
+                                    x-text="getSelectedDateData()?.returnDeparture + ' - ' + getSelectedDateData()?.returnArrival"
+                                  ></p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- What's Included -->
+                            <div class="pt-4 mt-4 border-t border-gray-100">
+                              <div class="flex items-center space-x-2 mb-1">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-4 w-4 text-green-600"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                                <span class="text-sm font-medium text-gray-700"
+                                  >Incluído</span
+                                >
+                              </div>
+                              <p class="text-xs text-gray-600">
+                                Voos + Alojamento + Transporte + Experiências
+                              </p>
+                            </div>
+
+                            <!-- Total Price -->
+                            <div class="pt-4 mt-4 border-t border-gray-300">
+                              <div class="flex items-center justify-between">
+                                <span
+                                  class="text-base font-semibold text-gray-900"
+                                  >Total:</span
+                                >
+                                <div class="text-right">
+                                  <p
+                                    class="text-md font-bold text-gray-900"
+                                    x-text="getSelectedPackageData()?.price + '€'"
+                                  ></p>
+                                  <p
+                                    class="text-xs text-gray-500"
+                                    x-text="getSelectedPackageData()?.pricePerPerson + '€ por pessoa'"
+                                  ></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 4: Payment -->
+                  <div x-show="currentStep === 4" class="p-6">
+                    <div class="max-w-md mx-auto text-center">
+                      <div
+                        class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                      >
+                        <svg
+                          class="w-8 h-8 text-green-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                      </div>
+                      <h3 class="text-xl font-bold text-gray-900 mb-3">
+                        Reserva Recebida!
+                      </h3>
+                      <p class="text-gray-600 text-sm mb-4">
+                        Sua reserva foi confirmada com sucesso.
+                      </p>
+
+                      <!-- Payment Status -->
+                      <div
+                        class="border-2 border-dashed border-blue-300 rounded-lg p-4 mb-4"
+                      >
+                        <div class="flex items-center justify-center mb-2">
+                          <div
+                            class="w-3 h-3 bg-blue-500 rounded-full animate-pulse mr-2"
+                          ></div>
+                          <span class="text-sm font-semibold text-blue-700"
+                            >Aguardando Pagamento</span
+                          >
+                        </div>
+                        <p class="text-sm text-gray-600 text-center">
+                          Complete o pagamento para garantir a sua vaga
+                        </p>
+                      </div>
+
+                      <div class="space-y-3">
+                        <button
+                          @click="proceedToPayment()"
+                          class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+                        >
+                          Pagar Agora
+                        </button>
+                        <p class="text-xs text-gray-500">
+                          Será redirecionado para completar o pagamento da sua
+                          reserva.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div
+                  x-show="currentStep < 4"
+                  class="border-t border-gray-200 py-4 px-4 bg-gray-50"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <button
+                        x-show="currentStep > 1"
+                        @click="prevStep()"
+                        class="flex items-center px-4 py-2 text-sm text-white bg-gray-400 hover:bg-gray-500 rounded-lg font-semibold transition-colors"
+                      >
+                        <span>Voltar</span>
+                      </button>
+                    </div>
+
+                    <div class="flex space-x-3">
+                      <button
+                        x-show="currentStep < 3"
+                        @click="nextStep()"
+                        :disabled="(currentStep === 1 && !selectedPackage) || (currentStep === 2 && !selectedDate)"
+                        :class="(currentStep === 1 && !selectedPackage) || (currentStep === 2 && !selectedDate) ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'"
+                        class="px-4 py-2 text-sm text-white rounded-lg font-semibold transition-colors"
+                      >
+                        Continuar
+                      </button>
+
+                      <button
+                        x-show="currentStep === 3"
+                        @click="submitBooking()"
+                        :disabled="!travelerInfo.firstName || !travelerInfo.lastName || !travelerInfo.email || !travelerInfo.phone || !isValidEmail(travelerInfo.email)"
+                        :class="!travelerInfo.firstName || !travelerInfo.lastName || !travelerInfo.email || !travelerInfo.phone || !isValidEmail(travelerInfo.email) ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'"
+                        class="px-4 py-2 text-sm text-white rounded-lg font-semibold transition-colors"
+                      >
+                        Confirmar Reserva
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 4 Footer -->
+                <div
+                  x-show="false"
+                  class="border-t border-gray-200 py-4 px-4 bg-gray-50"
+                >
+                  <div class="flex items-center justify-between">
+                    <button
+                      @click="showBookingModal = false; currentStep = 1; selectedPackage = null; selectedDate = ''; travelerInfo = { firstName: '', lastName: '', email: '', phone: '', specialRequests: '' }"
+                      class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg transition-colors"
+                    >
+                      Fechar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
