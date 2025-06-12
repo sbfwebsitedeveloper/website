@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SBF - Experiências e Cultura</title>
+    <title>SBF - Conteúdo</title>
     <link href="output.css" rel="stylesheet" />
     <link href="/src/assets/inter.css" rel="stylesheet" />
     <script defer src="/src/assets/alpine.js"></script>
@@ -33,7 +33,7 @@
             class="mx-auto flex max-w-6xl items-center justify-between py-6 px-8"
             aria-label="Global"
           >
-            <a href="index.html">
+            <a href="/index">
               <span class="sr-only">SBF</span>
               <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
             </a>
@@ -64,29 +64,30 @@
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
               <a
-                href="trips.html"
+                href="/trips"
                 class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
                 >Viagens</a
               >
               <a
-                href="content.html"
+                href="/content"
                 class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
                 >Conteúdo</a
               >
               <a
-                href="products.html"
+                href="/products"
                 class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
                 >Produtos</a
               >
 
               <a
-                href="about.html"
+                href="/about"
                 class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
                 >Sobre nós</a
               >
             </div>
           </nav>
 
+          <!-- Mobile menu -->
           <!-- Mobile menu -->
           <div
             class="lg:hidden"
@@ -106,7 +107,7 @@
             <div
               class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm"
             >
-              <div class="flex items-center justify-between pl-6 pr-8 py-6">
+              <div class="flex items-center justify-between pl-8 pr-8 py-6">
                 <a href="#" class="focus:outline-none">
                   <span class="sr-only">SBF</span>
                   <img
@@ -143,8 +144,8 @@
                 class="divide-y divide-gray-400/30 border-y border-gray-400/30"
               >
                 <a
-                  href="trips.html"
-                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  href="/trips"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -170,8 +171,8 @@
                 </a>
 
                 <a
-                  href="content.html"
-                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  href="/content"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -193,8 +194,8 @@
                 </a>
 
                 <a
-                  href="products.html"
-                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  href="/products"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -219,8 +220,8 @@
                 </a>
 
                 <a
-                  href="about.html"
-                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  href="/about"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -239,30 +240,6 @@
                     <path d="M12 8h.01" />
                   </svg>
                   Sobre nós
-                </a>
-
-                <a
-                  href="contacts.html"
-                  class="flex items-center gap-x-5 py-4 px-6 text-sm/6 font-medium text-black hover:bg-gray-100"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    x
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="flex-none text-gray-400"
-                  >
-                    <path
-                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-                    />
-                  </svg>
-                  Contacte-nos
                 </a>
               </div>
             </div>
@@ -377,88 +354,88 @@
               Galeria
             </h2>
             <a
-              href="gallery.html"
+              href="/gallery"
               class="rounded-md bg-blue-500 px-3 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >Ver mais</a
             >
           </div>
-          <div class="flex justify-center gap-7 overflow-hidden pt-7 pb-6">
-            <!-- Photo 1 -->
-            <div class="relative flex flex-col items-center">
-              <div
-                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
-              >
-                <img
-                  src="src/assets/1.jpg"
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <h3 class="mt-4 text-base font-medium text-gray-900">Marrocos</h3>
-              <p class="text-sm text-gray-600">Chefchaouen</p>
+        </div>
+        <div
+          class="px-8 flex lg:justify-center gap-7 overflow-x-auto pt-8 pb-6"
+        >
+          <!-- Photo 1 -->
+          <div class="relative flex flex-col items-center">
+            <div
+              class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+            >
+              <img
+                src="src/assets/1.jpg"
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Marrocos</h3>
+            <p class="text-sm text-gray-600">Chefchaouen</p>
+          </div>
 
-            <!-- Photo 2 -->
-            <div class="relative flex flex-col items-center">
-              <div
-                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2"
-              >
-                <img
-                  src="src/assets/2.jpg"
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <h3 class="mt-4 text-base font-medium text-gray-900">Índia</h3>
-              <p class="text-sm text-gray-600">Taj Mahal</p>
+          <!-- Photo 2 -->
+          <div class="relative flex flex-col items-center">
+            <div
+              class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2"
+            >
+              <img
+                src="src/assets/2.jpg"
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Índia</h3>
+            <p class="text-sm text-gray-600">Taj Mahal</p>
+          </div>
 
-            <!-- Photo 3 -->
-            <div class="relative flex flex-col items-center">
-              <div
-                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
-              >
-                <img
-                  src="src/assets/3.jpg"
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <h3 class="mt-4 text-base font-medium text-gray-900">Japão</h3>
-              <p class="text-sm text-gray-600">Kyoto</p>
+          <!-- Photo 3 -->
+          <div class="relative flex flex-col items-center">
+            <div
+              class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+            >
+              <img
+                src="src/assets/3.jpg"
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Japão</h3>
+            <p class="text-sm text-gray-600">Kyoto</p>
+          </div>
 
-            <!-- Photo 4 -->
-            <div class="relative flex flex-col items-center">
-              <div
-                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
-              >
-                <img
-                  src="src/assets/4.jpg"
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <h3 class="mt-4 text-base font-medium text-gray-900">
-                Tailândia
-              </h3>
-              <p class="text-sm text-gray-600">Bangkok</p>
+          <!-- Photo 4 -->
+          <div class="relative flex flex-col items-center">
+            <div
+              class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 rotate-2"
+            >
+              <img
+                src="src/assets/4.jpg"
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Tailândia</h3>
+            <p class="text-sm text-gray-600">Bangkok</p>
+          </div>
 
-            <!-- Photo 5 -->
-            <div class="relative flex flex-col items-center">
-              <div
-                class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2"
-              >
-                <img
-                  src="src/assets/5.jpg"
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <h3 class="mt-4 text-base font-medium text-gray-900">Brasil</h3>
-              <p class="text-sm text-gray-600">Rio de Janeiro</p>
+          <!-- Photo 5 -->
+          <div class="relative flex flex-col items-center">
+            <div
+              class="relative aspect-[9/10] w-32 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-48 sm:rounded-2xl dark:bg-zinc-800 -rotate-2"
+            >
+              <img
+                src="src/assets/5.jpg"
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Brasil</h3>
+            <p class="text-sm text-gray-600">Rio de Janeiro</p>
           </div>
         </div>
 
@@ -470,7 +447,7 @@
               Artigos
             </h2>
             <a
-              href="articles.html"
+              href="/articles"
               class="rounded-md bg-blue-500 px-3 py-1.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >Ver mais</a
             >
@@ -502,7 +479,7 @@
                 </p>
                 <div class="mt-7">
                   <a
-                    href="article.html"
+                    href="/article"
                     class="text-sm/6 font-medium text-blue-500 hover:text-blue-400"
                     >Ler mais <span class="pl-1" aria-hidden="true">→</span></a
                   >
