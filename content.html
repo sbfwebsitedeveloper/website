@@ -9,9 +9,22 @@
     <script defer src="/src/assets/alpine.js"></script>
   </head>
   <body>
-    <div class="relative">
+    <div
+      class="relative"
+      x-data="{ 
+      darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
+      init() {
+        this.$watch('darkMode', value => {
+          localStorage.setItem('darkMode', JSON.stringify(value));
+        });
+      }
+    }"
+      :class="{ 'dark': darkMode }"
+    >
       <!-- Content container -->
-      <div class="relative flex flex-col overflow-hidden">
+      <div
+        class="relative flex flex-col overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
         <header
           class="relative z-20"
           x-data="{
@@ -33,14 +46,14 @@
             class="mx-auto flex max-w-6xl items-center justify-between py-6 px-8"
             aria-label="Global"
           >
-            <a href="/index">
+            <a href="/">
               <span class="sr-only">SBF</span>
               <img class="h-16 w-auto" src="src/assets/logo.png" alt="SBF" />
             </a>
             <div class="flex lg:hidden">
               <button
                 type="button"
-                class="inline-flex items-center justify-center rounded-md text-black"
+                class="inline-flex items-center justify-center rounded-md text-black dark:text-white"
                 @click="mobileMenuOpen = true"
               >
                 <span class="sr-only">Open menu</span>
@@ -62,28 +75,70 @@
                 </svg>
               </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-10">
+            <div class="hidden lg:flex lg:gap-x-10 lg:items-center">
               <a
                 href="/trips"
-                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                class="text-sm/6 font-medium text-black dark:text-white tracking-wide hover:text-gray-600 dark:hover:text-gray-300"
                 >Viagens</a
               >
               <a
                 href="/content"
-                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                class="text-sm/6 font-medium text-black dark:text-white tracking-wide hover:text-gray-600 dark:hover:text-gray-300"
                 >Conteúdo</a
               >
               <a
                 href="/products"
-                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                class="text-sm/6 font-medium text-black dark:text-white tracking-wide hover:text-gray-600 dark:hover:text-gray-300"
                 >Produtos</a
               >
 
               <a
                 href="/about"
-                class="text-sm/6 font-medium text-black tracking-wide hover:text-gray-600"
+                class="text-sm/6 font-medium text-black dark:text-white tracking-wide hover:text-gray-600 dark:hover:text-gray-300"
                 >Sobre nós</a
               >
+              <!-- Night Mode Toggle -->
+              <button
+                @click="darkMode = !darkMode"
+                class="p-2 rounded-lg text-black dark:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+                :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+              >
+                <!-- Sun icon (shown in dark mode) -->
+                <svg
+                  x-show="darkMode"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="transition-transform duration-300"
+                >
+                  <circle cx="12" cy="12" r="5" />
+                  <path
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                  />
+                </svg>
+                <!-- Moon icon (shown in light mode) -->
+                <svg
+                  x-show="!darkMode"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="transition-transform duration-300"
+                >
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              </button>
             </div>
           </nav>
 
@@ -105,10 +160,10 @@
           >
             <div class="fixed inset-0 z-50 bg-black/70"></div>
             <div
-              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm"
+              class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:bg-gray-900 sm:max-w-sm transition-colors duration-300"
             >
               <div class="flex items-center justify-between pl-8 pr-8 py-6">
-                <a href="#" class="focus:outline-none">
+                <a href="/" class="focus:outline-none">
                   <span class="sr-only">SBF</span>
                   <img
                     class="h-16 w-auto"
@@ -118,7 +173,7 @@
                 </a>
                 <button
                   type="button"
-                  class="rounded-md text-black"
+                  class="rounded-md text-black dark:text-white"
                   @click="mobileMenuOpen = false"
                 >
                   <span class="sr-only">Close menu</span>
@@ -141,11 +196,11 @@
               </div>
 
               <div
-                class="divide-y divide-gray-400/30 border-y border-gray-400/30"
+                class="divide-y divide-gray-400/30 dark:divide-gray-600/30 border-y border-gray-400/30 dark:border-gray-600/30"
               >
                 <a
                   href="/trips"
-                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +212,7 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400"
+                    class="lucide lucide-backpack-icon lucide-backpack text-gray-400 dark:text-gray-500"
                   >
                     <path
                       d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
@@ -172,7 +227,7 @@
 
                 <a
                   href="/content"
-                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +239,7 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-folder-icon lucide-folder text-gray-400"
+                    class="lucide lucide-folder-icon lucide-folder text-gray-400 dark:text-gray-500"
                   >
                     <path
                       d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
@@ -195,7 +250,7 @@
 
                 <a
                   href="/products"
-                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +262,7 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-package-icon lucide-package text-gray-400"
+                    class="lucide lucide-package-icon lucide-package text-gray-400 dark:text-gray-500"
                   >
                     <path
                       d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
@@ -221,7 +276,7 @@
 
                 <a
                   href="/about"
-                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black hover:bg-gray-100"
+                  class="flex items-center gap-x-5 py-4 px-8 text-sm/6 font-medium text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +288,7 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="flex-none text-gray-400"
+                    class="flex-none text-gray-400 dark:text-gray-500"
                   >
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 16v-4" />
@@ -241,18 +296,75 @@
                   </svg>
                   Sobre nós
                 </a>
+
+                <!-- Night Mode Toggle for Mobile -->
+                <div class="flex items-center justify-between py-4 px-8">
+                  <div class="flex items-center gap-x-5">
+                    <svg
+                      x-show="!darkMode"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="text-gray-400 dark:text-gray-500"
+                    >
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                      />
+                    </svg>
+                    <svg
+                      x-show="darkMode"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="text-gray-400 dark:text-gray-500"
+                    >
+                      <circle cx="12" cy="12" r="5" />
+                      <path
+                        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                      />
+                    </svg>
+                    <span
+                      class="text-sm/6 font-medium text-black dark:text-white"
+                      >Modo noturno</span
+                    >
+                  </div>
+                  <button
+                    @click="darkMode = !darkMode"
+                    class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 dark:bg-gray-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+                    :class="{ 'bg-blue-600': darkMode }"
+                    role="switch"
+                    :aria-checked="darkMode"
+                  >
+                    <span
+                      class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                      :class="{ 'translate-x-5': darkMode, 'translate-x-0': !darkMode }"
+                    ></span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </header>
         <div class="max-w-6xl mx-auto w-full px-8 py-6">
           <h2
-            class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl"
+            class="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-4xl"
           >
             Conteúdo
           </h2>
           <p
-            class="mt-4 text-pretty text-md font-light text-gray-600 sm:text-md/8"
+            class="mt-4 text-pretty text-md font-light text-gray-600 dark:text-gray-300 sm:text-md/8"
           >
             Descubra destinos incríveis ao redor do mundo. Algumas experiências
             estão abertas para reservas, enquanto outras serão anunciadas em
@@ -262,12 +374,15 @@
 
         <div class="max-w-6xl mx-auto w-full px-8 py-6">
           <h2
-            class="text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl"
+            class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl"
           >
             Documentários
           </h2>
 
-          <ul role="list" class="divide-y divide-gray-200 pt-6">
+          <ul
+            role="list"
+            class="divide-y divide-gray-200 dark:divide-gray-600 pt-6"
+          >
             <li
               class="flex flex-col gap-10 py-12 first:pt-0 last:pb-0 md:flex-row"
             >
@@ -297,19 +412,28 @@
                 </a>
               </div>
               <div class="flex-auto">
-                <h3 class="text-lg font-semibold tracking-tight text-gray-900">
+                <h3
+                  class="text-lg font-semibold tracking-tight text-gray-900 dark:text-white"
+                >
                   "BELDI" (2023)
                 </h3>
-                <p class="text-base/7 text-gray-600 font-light">
+                <p
+                  class="text-base/7 text-gray-600 dark:text-gray-400 font-light"
+                >
                   Chefchaouen, Marrocos
                 </p>
-                <p class="mt-6 text-base/7 text-gray-600 font-light">
+                <p
+                  class="mt-6 text-base/7 text-gray-600 dark:text-gray-300 font-light"
+                >
                   Descubra todas as maravilhas que o Norte de Marrocos e as
                   Montanhas Rif têm a oferecer, e também seus segredos.
                 </p>
                 <ul role="list" class="mt-8 flex gap-x-6">
                   <li>
-                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <a
+                      href="#"
+                      class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400"
+                    >
                       <span class="sr-only">X</span>
                       <svg
                         class="size-5"
@@ -324,7 +448,10 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <a
+                      href="#"
+                      class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400"
+                    >
                       <span class="sr-only">LinkedIn</span>
                       <svg
                         class="size-5"
@@ -349,7 +476,7 @@
         <div class="max-w-6xl mx-auto w-full px-8 pt-6">
           <div class="flex justify-between items-center">
             <h2
-              class="text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl"
+              class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl"
             >
               Galeria
             </h2>
@@ -374,8 +501,12 @@
                 class="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-            <h3 class="mt-4 text-base font-medium text-gray-900">Marrocos</h3>
-            <p class="text-sm text-gray-600">Chefchaouen</p>
+            <h3
+              class="mt-4 text-base font-medium text-gray-900 dark:text-white"
+            >
+              Marrocos
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Chefchaouen</p>
           </div>
 
           <!-- Photo 2 -->
@@ -389,8 +520,12 @@
                 class="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-            <h3 class="mt-4 text-base font-medium text-gray-900">Índia</h3>
-            <p class="text-sm text-gray-600">Taj Mahal</p>
+            <h3
+              class="mt-4 text-base font-medium text-gray-900 dark:text-white"
+            >
+              Índia
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Taj Mahal</p>
           </div>
 
           <!-- Photo 3 -->
@@ -404,8 +539,12 @@
                 class="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-            <h3 class="mt-4 text-base font-medium text-gray-900">Japão</h3>
-            <p class="text-sm text-gray-600">Kyoto</p>
+            <h3
+              class="mt-4 text-base font-medium text-gray-900 dark:text-white"
+            >
+              Japão
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Kyoto</p>
           </div>
 
           <!-- Photo 4 -->
@@ -419,8 +558,12 @@
                 class="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-            <h3 class="mt-4 text-base font-medium text-gray-900">Tailândia</h3>
-            <p class="text-sm text-gray-600">Bangkok</p>
+            <h3
+              class="mt-4 text-base font-medium text-gray-900 dark:text-white"
+            >
+              Tailândia
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Bangkok</p>
           </div>
 
           <!-- Photo 5 -->
@@ -434,15 +577,21 @@
                 class="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-            <h3 class="mt-4 text-base font-medium text-gray-900">Brasil</h3>
-            <p class="text-sm text-gray-600">Rio de Janeiro</p>
+            <h3
+              class="mt-4 text-base font-medium text-gray-900 dark:text-white"
+            >
+              Brasil
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Rio de Janeiro
+            </p>
           </div>
         </div>
 
         <div class="max-w-6xl mx-auto w-full px-8 pt-6 pb-12">
           <div class="flex justify-between items-center">
             <h2
-              class="text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl"
+              class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl"
             >
               Artigos
             </h2>
@@ -452,7 +601,10 @@
               >Ver mais</a
             >
           </div>
-          <ul role="list" class="divide-y divide-gray-200 pt-6">
+          <ul
+            role="list"
+            class="divide-y divide-gray-200 dark:divide-gray-600 pt-6"
+          >
             <li
               class="flex flex-col gap-10 py-12 first:pt-0 last:pb-0 md:flex-row"
             >
@@ -462,13 +614,19 @@
                 alt=""
               />
               <div class="flex-auto">
-                <h3 class="text-lg font-semibold tracking-tight text-gray-900">
+                <h3
+                  class="text-lg font-semibold tracking-tight text-gray-900 dark:text-white"
+                >
                   Canábis na cultura e gastronomia
                 </h3>
-                <p class="text-sm/7 text-gray-600 font-light">
+                <p
+                  class="text-sm/7 text-gray-600 dark:text-gray-400 font-light"
+                >
                   17 de Setembro, 2024
                 </p>
-                <p class="mt-6 text-base/7 text-gray-600 font-light">
+                <p
+                  class="mt-6 text-base/7 text-gray-600 dark:text-gray-300 font-light"
+                >
                   Descubra todas as maravilhas que o Norte de Marrocos e as
                   Montanhas Rif têm a oferecer, e também seus segredos. Descubra
                   todas as maravilhas que o Norte de Marrocos e as Montanhas Rif
